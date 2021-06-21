@@ -57,7 +57,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
         let centre_x = (link.length / 2.) * angle_sum.cos();
         let centre_y = (link.length / 2.) * angle_sum.sin();
         draw.ellipse()
-            .w_h(link.length + 2.*extra, width)
+            .w_h(link.length + 2. * extra, width)
             .color(GREENYELLOW)
             .stroke(DARKBLUE)
             .stroke_weight(1.)

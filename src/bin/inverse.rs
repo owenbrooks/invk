@@ -43,9 +43,9 @@ fn event(_app: &App, model: &mut Model, event: WindowEvent) {
         WindowEvent::MouseMoved(pos) => {
             // model.mouse_pos = pos.;
             // println!("{:?}", pos);
-            let mouse_pos = nannou::math::cgmath::Vector2{x: pos.x, y: pos.y};
+            let mouse_pos = nannou::math::cgmath::Vector2 { x: pos.x, y: pos.y };
             model.links = inverse_kinematics(&model.links, mouse_pos);
-        },
+        }
         _other => (),
     }
 }
@@ -67,7 +67,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
         let centre_x = (link.length / 2.) * angle_sum.cos();
         let centre_y = (link.length / 2.) * angle_sum.sin();
         draw.ellipse()
-            .w_h(link.length + 2.*extra, width)
+            .w_h(link.length + 2. * extra, width)
             .color(GREENYELLOW)
             .stroke(DARKBLUE)
             .stroke_weight(1.)

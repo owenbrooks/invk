@@ -1,4 +1,3 @@
-
 #[derive(Clone, Copy)]
 pub struct Link {
     pub length: f32,
