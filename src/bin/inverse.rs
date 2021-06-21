@@ -1,8 +1,7 @@
-use learn_nannou::links::Link;
+use learn_nannou::{inverse_kinematics, links::Link};
 use nannou::prelude::*;
 struct Model {
     links: Vec<Link>,
-    mouse_pos: Vector2<f32>,
 }
 fn main() {
     nannou::app(model).update(update).run();
@@ -27,23 +26,25 @@ fn model(app: &App) -> Model {
     };
     Model {
         links: vec![l1, l2, l3, l4],
-        mouse_pos: pt2(0., 0.),
     }
 }
 
-fn update(_app: &App, model: &mut Model, update: Update) {
-    let time = update.since_start.as_secs_f32();
-    let scale_factor = 1.;
-    let new_angle = time * scale_factor % std::f32::consts::TAU;
-    for link in &mut model.links {
-        link.angle = new_angle;
-    }
+fn update(_app: &App, _model: &mut Model, _update: Update) {
+    // let time = update.since_start.as_secs_f32();
+    // let scale_factor = 1.;
+    // let new_angle = time * scale_factor % std::f32::consts::TAU;
+    // for link in &mut model.links {
+    //     link.angle = new_angle;
+    // }
 }
 
 fn event(_app: &App, model: &mut Model, event: WindowEvent) {
     match event {
         WindowEvent::MouseMoved(pos) => {
-            model.mouse_pos = pos;
+            // model.mouse_pos = pos.;
+            // println!("{:?}", pos);
+            let mouse_pos = nannou::math::cgmath::Vector2{x: pos.x, y: pos.y};
+            model.links = inverse_kinematics(&model.links, mouse_pos);
         },
         _other => (),
     }
@@ -63,10 +64,10 @@ fn view(app: &App, model: &Model, frame: Frame) {
     let mut angle_sum = 0.;
     for link in &model.links {
         angle_sum += link.angle;
-        let centre_x = (link.length / 2. - extra) * angle_sum.cos();
-        let centre_y = (link.length / 2. - extra) * angle_sum.sin();
+        let centre_x = (link.length / 2.) * angle_sum.cos();
+        let centre_y = (link.length / 2.) * angle_sum.sin();
         draw.ellipse()
-            .w_h(link.length + extra, width)
+            .w_h(link.length + 2.*extra, width)
             .color(GREENYELLOW)
             .stroke(DARKBLUE)
             .stroke_weight(1.)

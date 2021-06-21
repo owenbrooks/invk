@@ -54,10 +54,10 @@ fn view(app: &App, model: &Model, frame: Frame) {
     let mut angle_sum = 0.;
     for link in &model.links {
         angle_sum += link.angle;
-        let centre_x = (link.length / 2. - extra) * angle_sum.cos();
-        let centre_y = (link.length / 2. - extra) * angle_sum.sin();
+        let centre_x = (link.length / 2.) * angle_sum.cos();
+        let centre_y = (link.length / 2.) * angle_sum.sin();
         draw.ellipse()
-            .w_h(link.length + extra, width)
+            .w_h(link.length + 2.*extra, width)
             .color(GREENYELLOW)
             .stroke(DARKBLUE)
             .stroke_weight(1.)
