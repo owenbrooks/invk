@@ -15,7 +15,8 @@ pub fn inverse_kinematics(links: &Vec<links::Link>, end_pos: Vector2<f32>) -> Ve
 
     let mut links = links.clone();
 
-    for _ in 0..10000 {
+    let iterations = 10000;
+    for _ in 0..iterations {
         let mut new_links = links.clone();
         for i in (0..links.len()).rev() {
             new_links[i].angle += delta;
