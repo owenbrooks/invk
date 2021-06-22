@@ -1,4 +1,4 @@
-use learn_nannou::links::Link;
+use invk::links::Link;
 use nannou::prelude::*;
 struct Model {
     links: Vec<Link>,

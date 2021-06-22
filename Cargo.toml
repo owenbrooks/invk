@@ -1,5 +1,5 @@
 [package]
-name = "learn_nannou"
+name = "invk"
 version = "0.1.0"
 authors = ["Owen Brooks <owen.h.brooks@gmail.com>"]
 edition = "2018"

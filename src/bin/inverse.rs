@@ -1,4 +1,4 @@
-use learn_nannou::{inverse_kinematics, links::Link};
+use invk::{inverse_kinematics, links::Link};
 use nannou::prelude::*;
 struct Model {
     links: Vec<Link>,
