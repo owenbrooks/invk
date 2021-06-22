@@ -8,7 +8,7 @@ fn main() {
     nannou::app(model).update(update).run();
 }
 fn model(app: &App) -> Model {
-    app.new_window().event(event).view(view).build().unwrap();
+    app.new_window().title("Inverse Kinematics").event(event).view(view).build().unwrap();
     let l1 = Link {
         length: 200.,
         angle: 0.,
