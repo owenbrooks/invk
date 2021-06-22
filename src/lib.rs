@@ -8,15 +8,20 @@ pub mod links;
 pub fn inverse_kinematics(links: &Vec<links::Link>, end_pos: Vector2<f32>) -> Vec<links::Link> {
     // perform gradient descent over all the joint angles
 
-    let max_change = 0.1;
+    let max_change = 0.001;
     
     let delta = 0.01;
     let learn_rate = 0.0001;
+    let epsilon = 0.1; // acceptable threshold distance to goal
 
     let mut links = links.clone();
 
     let iterations = 10000;
     for _ in 0..iterations {
+        if distance_from_goal(&links, end_pos) < epsilon {
+            break;
+        }
+
         let mut new_links = links.clone();
         for i in (0..links.len()).rev() {
             new_links[i].angle += delta;
