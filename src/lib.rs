@@ -2,11 +2,15 @@ use nannou::math::{
     cgmath::{vec2, Vector2},
     MetricSpace,
 };
-// use nannou::prelude::*;
 
 pub mod links;
 
 pub fn inverse_kinematics(links: &Vec<links::Link>, end_pos: Vector2<f32>) -> Vec<links::Link> {
+    // perform gradient descent over all the joint angles
+
+    let min_angle = -4.*std::f32::consts::FRAC_PI_2;
+    let max_angle = 4.*std::f32::consts::FRAC_PI_2;
+    
     let delta = 0.01;
     let learn_rate = 0.0001;
 
@@ -20,10 +24,21 @@ pub fn inverse_kinematics(links: &Vec<links::Link>, end_pos: Vector2<f32>) -> Ve
                 distance_from_goal(&new_links, end_pos) - distance_from_goal(&links, end_pos);
             let gradient = error / delta;
             links[i].angle -= learn_rate * gradient;
+            links[i].angle = clamp(links[i].angle, min_angle, max_angle);
         }
     }
 
     links
+}
+
+fn clamp(value: f32, min: f32, max: f32) -> f32 {
+    if value < min {
+        min
+    } else if value > max {
+        max
+    } else {
+        value
+    }
 }
 
 pub fn direct_kinematics(links: &Vec<links::Link>) -> Vector2<f32> {
@@ -42,5 +57,3 @@ pub fn distance_from_goal(links: &Vec<links::Link>, goal_pos: Vector2<f32>) -> f
     let end_pos = direct_kinematics(links);
     end_pos.distance(goal_pos)
 }
-
-// want to perform gradient descent over all the joint angles
