@@ -10,7 +10,7 @@ Provides two binaries:
 - `direct.rs` to demonstrate the display of a robotic arm with joint angles varying over time
 - `inverse.rs` which uses the inverse kinematics algorithm to set the end of the arm to the coordinates of the mouse. See screenshot.
 
-Uses a gradient-descent algorithm to compute the inverse kinematics numerically.
+Uses either [FABRIK](http://www.andreasaristidou.com/FABRIK.html) or a gradient-descent algorithm to compute the inverse kinematics numerically.
 The graphics display is done using [nannou](https://github.com/nannou-org/nannou).
 
 # How to run
