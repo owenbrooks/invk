@@ -1,4 +1,4 @@
-use invk::{inverse_kinematics, links::Link};
+use invk::{fabrik, inverse_kinematics, links::Link};
 use nannou::prelude::*;
 struct Model {
     links: Vec<Link>,
@@ -8,32 +8,31 @@ fn main() {
     nannou::app(model).update(update).run();
 }
 fn model(app: &App) -> Model {
-    app.new_window().title("Inverse Kinematics").event(event).view(view).build().unwrap();
-    let l1 = Link {
-        length: 200.,
-        angle: 0.,
-    };
-    let l2 = Link {
-        length: 100.,
-        angle: 0.,
-    };
-    let l3 = Link {
-        length: 80.,
-        angle: 0.,
-    };
-    let l4 = Link {
-        length: 50.,
-        angle: 0.,
-    };
+    app.new_window()
+        .title("Inverse Kinematics")
+        .event(event)
+        .view(view)
+        .build()
+        .unwrap();
+
+    let lengths = vec![200., 100., 80., 50., 30.];
+    let links: Vec<Link> = lengths.iter().map(|length| Link {
+        length: *length,
+        angle: 0.0,
+    }).collect();
     Model {
-        links: vec![l1, l2, l3, l4],
+        links: links.clone(),
         mouse_pos: pt2(0.0, 0.0),
     }
 }
 
 fn update(_app: &App, model: &mut Model, _update: Update) {
-    let mouse_pos = nannou::math::cgmath::Vector2 { x: model.mouse_pos.x, y: model.mouse_pos.y };
-    model.links = inverse_kinematics(&model.links, mouse_pos);
+    let mouse_pos = nannou::math::cgmath::Vector2 {
+        x: model.mouse_pos.x,
+        y: model.mouse_pos.y,
+    };
+    // model.links = inverse_kinematics(&model.links, mouse_pos);
+    model.links = fabrik::inverse_kinematics(&model.links, mouse_pos);
 }
 
 fn event(_app: &App, model: &mut Model, event: WindowEvent) {
