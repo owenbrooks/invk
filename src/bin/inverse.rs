@@ -1,4 +1,4 @@
-use invk::{fabrik, inverse_kinematics, links::Link};
+use invk::{fabrik, grad_desc, links::Link};
 use nannou::prelude::*;
 struct Model {
     links: Vec<Link>,
@@ -16,10 +16,13 @@ fn model(app: &App) -> Model {
         .unwrap();
 
     let lengths = vec![200., 100., 80., 50., 30.];
-    let links: Vec<Link> = lengths.iter().map(|length| Link {
-        length: *length,
-        angle: 0.0,
-    }).collect();
+    let links: Vec<Link> = lengths
+        .iter()
+        .map(|length| Link {
+            length: *length,
+            angle: 0.0,
+        })
+        .collect();
     Model {
         links: links.clone(),
         mouse_pos: pt2(0.0, 0.0),
@@ -31,8 +34,13 @@ fn update(_app: &App, model: &mut Model, _update: Update) {
         x: model.mouse_pos.x,
         y: model.mouse_pos.y,
     };
-    // model.links = inverse_kinematics(&model.links, mouse_pos);
-    model.links = fabrik::inverse_kinematics(&model.links, mouse_pos);
+
+    let method = 1;
+    if method == 0 {
+        model.links = grad_desc::inverse_kinematics(&model.links, mouse_pos);
+    } else {
+        model.links = fabrik::inverse_kinematics(&model.links, mouse_pos);
+    }
 }
 
 fn event(_app: &App, model: &mut Model, event: WindowEvent) {

@@ -21,9 +21,9 @@ pub fn inverse_kinematics(links: &Vec<links::Link>, end_pos: Vector2<f32>) -> Ve
         let n = links.len() + 1;
         let root = vec2(0.0, 0.0); // initial position of first joint, assumed 0 (b)
         let tolerance = 0.001;
-        
+
         let mut positions = direct_kinematics(links);
-        let end_effector = positions[n-1];
+        let end_effector = positions[n - 1];
         let mut diff = end_effector.distance(end_pos); // (difA)
 
         let mut iterations = 0;
@@ -31,7 +31,7 @@ pub fn inverse_kinematics(links: &Vec<links::Link>, end_pos: Vector2<f32>) -> Ve
             // Stage 1: Forward reaching
             positions[n - 1] = end_pos;
 
-            for i in (0..n-1).rev() {
+            for i in (0..n - 1).rev() {
                 let dist = positions[i + 1].distance(positions[i]);
                 let lambda = links[i].length / dist;
                 positions[i] = (1.0 - lambda) * positions[i + 1] + lambda * positions[i];
@@ -59,7 +59,7 @@ fn links_from_positions(
 ) -> Vec<links::Link> {
     let mut links = orig_links.clone();
     let mut angle_sum = 0.0;
-    for i in 0..positions.len()-1 {
+    for i in 0..positions.len() - 1 {
         let diff = positions[i + 1] - positions[i];
         let total_angle = diff.y.atan2(diff.x);
         let joint_angle = total_angle - angle_sum;
@@ -108,7 +108,7 @@ mod tests {
         assert_eq!(links[1].angle, std::f32::consts::FRAC_PI_4);
     }
 
-    #[test] 
+    #[test]
     fn test_quad2() {
         let l1 = Link {
             length: 200.,
@@ -122,13 +122,13 @@ mod tests {
         let positions = vec![
             vec2(0.0, 0.0),
             vec2(
-                200.0 * (std::f32::consts::FRAC_PI_6+std::f32::consts::FRAC_PI_2).cos(),
-                200.0 * (std::f32::consts::FRAC_PI_6+std::f32::consts::FRAC_PI_2).sin(),
+                200.0 * (std::f32::consts::FRAC_PI_6 + std::f32::consts::FRAC_PI_2).cos(),
+                200.0 * (std::f32::consts::FRAC_PI_6 + std::f32::consts::FRAC_PI_2).sin(),
             ),
             vec2(
-                200.0 * (std::f32::consts::FRAC_PI_6+std::f32::consts::FRAC_PI_2).cos()
+                200.0 * (std::f32::consts::FRAC_PI_6 + std::f32::consts::FRAC_PI_2).cos()
                     + 100. * (std::f32::consts::FRAC_PI_4).cos(),
-                200.0 * (std::f32::consts::FRAC_PI_6+std::f32::consts::FRAC_PI_2).sin()
+                200.0 * (std::f32::consts::FRAC_PI_6 + std::f32::consts::FRAC_PI_2).sin()
                     + 100. * (std::f32::consts::FRAC_PI_4).sin(),
             ),
         ];
