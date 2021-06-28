@@ -20,14 +20,14 @@ pub fn inverse_kinematics(links: &Vec<links::Link>, end_pos: Vector2<f32>) -> Ve
         // goal is reachable, perform fabrik algorithm
         let n = links.len() + 1;
         let root = vec2(0.0, 0.0); // initial position of first joint, assumed 0 (b)
-        let tolerance = 0.001;
+        let tolerance = 0.01;
 
         let mut positions = direct_kinematics(links);
         let end_effector = positions[n - 1];
         let mut diff = end_effector.distance(end_pos); // (difA)
 
         let mut iterations = 0;
-        while diff > tolerance && iterations < 10 {
+        while diff > tolerance && iterations < 100 {
             // Stage 1: Forward reaching
             positions[n - 1] = end_pos;
 
@@ -48,6 +48,7 @@ pub fn inverse_kinematics(links: &Vec<links::Link>, end_pos: Vector2<f32>) -> Ve
             diff = positions[n - 1].distance(end_pos);
             iterations += 1;
         }
+        // println!("Iters: {}", iterations);
 
         links_from_positions(links, &positions)
     }
