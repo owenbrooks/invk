@@ -1,7 +1,7 @@
 # invk
 Experimenting with inverse kinematics algorithms
 
-![Screenshot](./screenshot.png)
+![Demo GIF](./demo.gif)
 
 Works with 2D planar revolute-joint robots
 
